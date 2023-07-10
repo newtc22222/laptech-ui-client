@@ -1,25 +1,33 @@
 /** @format */
 
+import { Button } from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { Box, Container, Grid, Paper } from '@mui/material';
 import { Typography } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import Confetti from 'react-confetti';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { numberWithCommas } from '../../../utils';
-import { Button } from '@material-ui/core';
+import { orderService } from '../../../services';
 
 const Order = () => {
-  const order = useSelector((state) => state.order?.order?.data);
-  const dataOrder = order?.data;
   const dataUser = JSON.parse(localStorage.getItem('loginClient')) || {};
   const { user } = dataUser || {};
   const navigate = useNavigate();
+  const [dataInvoice, setDataInvoice] = useState({});
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const invoiceDataParam = searchParams.get('invoiceData');
+  orderService.getOrderById(invoiceDataParam).then((res) => {
+    if (res.status === 200) {
+      setDataInvoice(res.data);
+    }
+  });
 
   return (
     <Container style={{ paddingTop: '80px', maxWidth: '700px', minHeight: '800px', position: 'relative' }}>
@@ -76,7 +84,7 @@ const Order = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography style={{ fontSize: '1.5rem' }}>{dataOrder?.address}</Typography>
+            <Typography style={{ fontSize: '1.5rem' }}>{dataInvoice?.address}</Typography>
           </Grid>
 
           <Grid item xs={6}>
@@ -90,7 +98,7 @@ const Order = () => {
 
           <Grid item xs={6}>
             <Typography style={{ fontSize: '1.5rem', color: 'red' }}>
-              {numberWithCommas(dataOrder?.paymentTotal)} đ
+              {numberWithCommas(dataInvoice?.paymentTotal)} đ
             </Typography>
           </Grid>
         </Grid>

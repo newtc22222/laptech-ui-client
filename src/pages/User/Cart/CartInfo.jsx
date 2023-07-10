@@ -114,8 +114,9 @@ function CartInfo() {
       setRequesting(true);
 
       if (res.status === 201) {
-        navigate('/order');
+        setRequesting(false);
         dispatch(clearCart());
+        navigate('/order?invoiceData=' + encodeURIComponent(invoiceId));
       }
     });
   };
