@@ -1,0 +1,54 @@
+.heading {
+    color: hsla(0, 0%, 100%, 0.9);
+    background-color: rgb(4, 170, 109);
+    box-shadow: 1px 3px 8px rgba(0,0,0,0.3);
+    font-size: 1.2rem;
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    @mixin d-flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .logo {
+        background-image: url('../../assets/LAPTECH-ECOM.png');
+        background-size: cover;
+        width: 242px;
+        height: 44px;
+        cursor: pointer;
+    }
+    .top {
+        height: 50px;
+        @include d-flex;
+        .wrap {
+            width: 1200px;
+            height: 40px;
+            @include d-flex;
+            justify-content: space-between;
+        }
+    }
+    .bottom {
+        display: flex;
+        height: 64px;
+        nav {
+            @include d-flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            .item {
+                @include d-flex;
+                gap: 4px;
+            }
+        }
+    }
+}
+#tippy-5 {
+    inset: 1px 2px auto 10px !important;
+    margin: -9px !important;
+}
+.tippy-arrow::before {
+    display: none;
+}

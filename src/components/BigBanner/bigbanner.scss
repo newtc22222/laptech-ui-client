@@ -1,0 +1,32 @@
+.container__bigbanner{
+    width: 100%;
+    display: flex;
+    padding-top: 80px;
+    justify-content: center;
+    align-items: center;
+    
+    .containner__body{
+        display: flex;
+        height: 200px;
+        .containner__first-item{
+            width: 1240px;
+        }
+        .containner__second-item{
+            padding-left: 10px;
+            display: flex;
+            flex-direction: column;
+           
+        }
+    }
+}
+.slick-next{
+    right: 0 !important;
+}
+.slick-prev{
+    left: 0 !important;
+    z-index: 2;
+}
+.slick-dots{
+    bottom: 0 !important;
+}
+

@@ -1,0 +1,111 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+:root {
+	--primary-bg: #ffd400;
+	--primary-bg-btn: #ffac0a;
+}
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1.6rem;
+	line-height: 1.5;
+	background-color: #f1f1f1;
+	text-rendering: optimizeSpeed;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+}
+
+svg {
+	display: inline-block;
+	font-size: 1.5rem;
+}
+.MuiSvgIcon-root{
+  font-size: 2.2rem !important;
+}
+input[type="number"] {
+  -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+}
+
+.tippy-box {
+	background-color: #fff;
+	max-width: 950px !important;
+	border: 1px solid #ddd;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.tippy-arrow {
+	color: #fff;
+}
+.MuiFormHelperText-root.Mui-error{
+	font-size: 15px;
+}
+.MuiAutocomplete-endAdornment{
+	position: relative !important;
+	bottom: 0;
+	
+}
+.react-hooks-paginator .page-item:hover .page-link, .react-hooks-paginator .page-item.active .page-link {
+	background-color: #04aa6d;
+	cursor: pointer;
+	
+}
+.react-hooks-paginator .page-item .page-link{
+	width: 40px;
+	height: 40px;
+	border: none;
+}
+.css-ahj2mt-MuiTypography-root{
+	font-size: 1.5rem !important;
+
+}
+.MuiInputBase-input,
+.MuiFormLabel-root,
+.MuiPickersDay-day,
+.MuiTypography-body2,
+.MuiTypography-caption,
+.MuiTypography-body1,
+.MuiTypography-subtitle1
+{
+	font-size: 1.5rem !important;
+}
+.css-ryrseu-MuiRating-root{
+	font-size: 2.2rem !important;
+}
+.slick-dots.slick-thumb{
+	position: relative !important;
+}
+.slick-dots li{
+	display: inline-block !important;
+	width: 100px;
+	height: 100%;
+}
+.Mui-disabled {
+	cursor: not-allowed;
+}
+.MuiTypography-h6{
+  font-size: 18px !important;
+}
+.MuiButton-containedPrimary ,.MuiButton-outlinedPrimary{
+  height: 40px !important;
+}
+.css-cjctlb-MuiButtonBase-root-MuiTab-root.Mui-selected, .css-cjctlb-MuiButtonBase-root-MuiTab-root {
+  font-size: 12px !important;
+}

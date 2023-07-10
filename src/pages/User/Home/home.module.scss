@@ -1,0 +1,33 @@
+.main {
+	width: 86%;
+	max-width: 1240px;
+	margin: 120px auto;
+	section {
+		margin-block: 32px;
+		border-radius: 8px;
+		padding-bottom: 16px;
+		.cover {
+			width: 394px;
+			height: 212px;
+			img {
+				border-radius: 16px;
+			}
+		}
+		
+	}
+	.head {
+		display: flex;
+		padding: 16px;
+		justify-content: space-between;
+		align-items: center;
+		height: 48px;
+		color: #333;
+		p {
+			font-size: 1.1rem;
+			font-weight: 700;
+		}
+	}
+
+
+}
+

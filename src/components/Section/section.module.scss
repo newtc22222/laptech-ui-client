@@ -1,0 +1,12 @@
+.head {
+	display: flex;
+	padding: 16px;
+	justify-content: space-between;
+	align-items: center;
+	height: 48px;
+	color: #333;
+	p {
+		font-size: 1.1rem;
+		font-weight: 700;
+	}
+}

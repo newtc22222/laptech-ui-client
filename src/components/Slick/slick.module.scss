@@ -1,0 +1,44 @@
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	width: 100%;
+	max-width: 1234px;
+	height: 100%;
+	.body {
+		width: 94%;
+		height: 100%;
+		overflow: auto;
+		scroll-behavior: smooth;
+		border-radius: 8px;
+		.wrap { 
+			display: flex;
+			gap: 10px;
+			width: fit-content;
+			width: -webkit-fit-content;
+		    width: -moz-fit-content; 
+			height: 100%;
+			transition: scroll 700ms;
+			img {
+				max-width: unset;
+				height: 100%;
+				border-radius: 8px;
+				object-fit: cover;
+			}
+		}
+	}
+	&:hover i {
+		opacity: 1;
+	}
+	.left {
+		left: 0;
+		position: absolute;
+		cursor: pointer;
+	}
+	.right {
+		right: 0;
+		position: absolute;
+		cursor: pointer;
+	}
+}

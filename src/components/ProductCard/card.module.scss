@@ -1,0 +1,135 @@
+.card {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #fff;
+	border-radius: 8px;
+	color: #333333;
+	font-size: 1.4rem;
+	cursor: pointer;
+	padding: 10px 15px 20px;
+	height: 480px;
+	border-color: #d0021c;
+  width: 300px;
+	border-width: 5px;
+
+	.wrap {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		
+		
+
+		.title {
+
+			font-size: 16px;
+			color: grey;
+			font-weight: bold;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			max-width: 200px;
+			max-lines: 2;
+		}
+
+		.discount {
+			width: fit-content;
+			font-size: 1.1rem;
+			border-radius: 4px;
+			background-color: #f1f1f1;
+			padding: 4px 8px;
+		}
+
+		.image {
+			width: 210px;
+			height: 226px;
+			position: relative;
+
+			.img {
+				margin-top: 8px;
+				transition: margin 700ms;
+				max-width: 100%;
+			}
+
+			.imgPolicy {
+				width: 45px;
+				height: 45px;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+			}
+		}
+
+		.tag {
+			font-size: 13px;
+			padding: 0 8px;
+			line-height: 24px;
+			border-radius: 6px;
+			display: inline-block;
+			color: #fff;
+			background: #04aa6d;
+		}
+
+		.price {
+			color: #d0021c;
+		}
+
+		svg {
+			display: inline;
+
+		}
+
+		.infoProduct {
+			p {
+
+				display: flex;
+				column-count: 2;
+				column-fill: balance;
+				color: #222;
+				font-size: 12px;
+				line-height: 22px;
+			}
+		}
+
+		.infoProduct p span:first-child {
+			display: inline-block;
+			min-width: 65px;
+		}
+	}
+
+
+
+	.cardCompare {
+
+		span {
+			border: 1px solid #e0e0e0;
+			border-radius: 2px;
+			color: #333;
+			font-size: 12px;
+			line-height: 12px;
+			display: inline-block;
+			margin-right: 5px;
+			padding: 4px 5px;
+			margin-bottom: 5px;
+			margin-top: 5px;
+		}
+
+		.selecttype {
+			color: #2f80ed;
+			border: 1px solid #2f80ed;
+		}
+	}
+}
+
+.card:hover {
+	.wrap {
+		.image {
+			img {
+				margin-top: unset;
+			}
+		}
+
+		.title {
+			color: #2f80ed;
+		}
+	}
+}
