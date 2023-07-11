@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getProductsByName } from '../../redux/product/productsApi';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 
 const useStyles = makeStyles(() => ({
   inputBase: {
@@ -49,6 +50,9 @@ const SearchProduct = () => {
       handleSearch();
     }
   };
+  const handleClearSearchValue = () => {
+    setSearchValue('');
+  };
 
   return (
     <>
@@ -66,6 +70,19 @@ const SearchProduct = () => {
             >
               <SearchIcon fontSize="large" />
             </IconButton>
+          }
+          endAdornment={
+            searchValue !== '' && (
+              <>
+                <IconButton
+                  onClick={() => {
+                    handleClearSearchValue();
+                  }}
+                >
+                  <CloseOutlinedIcon fontSize="large" />
+                </IconButton>
+              </>
+            )
           }
           value={searchValue}
           onChange={handleChange}
