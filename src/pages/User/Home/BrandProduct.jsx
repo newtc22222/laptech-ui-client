@@ -18,7 +18,7 @@ function BrandProduct() {
 
   return (
     <Section styles="rounded-xl overflow-hidden">
-      <div style={{ textAlign: 'center', backgroundColor: '#666', marginTop: '10px' }}>
+      <div style={{ textAlign: 'center', backgroundColor: '#e0e0e0', marginTop: '10px' }}>
         {allBrand.map((brand) => {
           return (
             <Box style={{ display: 'inline-flex', margin: '10px' }} key={brand.id}>
