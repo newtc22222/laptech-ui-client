@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { commentService } from '../../services';
 import { convertUTCDate } from '../../utils/ConvertUTCDate';
 import convertToIcon from '../../utils/convertToIcon';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles(() => ({
   inputBase: {
@@ -99,7 +100,8 @@ const Comment = () => {
 
   const hanldePostComment = () => {
     if (Object.keys(dataUser).length === 0 && dataUser.constructor === Object) {
-      alert('Đăng nhập vào hệ thống để bình luận về sản phẩm');
+      toast.warning('Đăng nhập vào hệ thống để bình luận về sản phẩm');
+      toast.clearWaitingQueue();
     } else {
       postComments(dispatch, dataPostComment)
         .then(() => {
@@ -107,7 +109,7 @@ const Comment = () => {
           fetchComments();
         })
         .catch((error) => {
-          console.log('Error posting comment:', error);
+          toast.error('Nội dung bình luận phải từ 10 đến 255 ký tự');
         });
     }
   };
@@ -124,6 +126,17 @@ const Comment = () => {
         .catch((error) => {
           console.log('Error posting reply comment:', error);
         });
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      hanldePostComment();
+    }
+  };
+  const handleKeyDownReply = (event) => {
+    if (event.key === 'Enter') {
+      hanldePostReplyComment();
     }
   };
 
@@ -193,6 +206,7 @@ const Comment = () => {
                           value={replyContent}
                           className={classes.inputBase}
                           onChange={handleChangeReplyContent}
+                          onKeyDown={handleKeyDownReply}
                           endAdornment={
                             <SendIcon
                               onClick={hanldePostReplyComment}
@@ -217,6 +231,7 @@ const Comment = () => {
             placeholder="Bình luận"
             value={content}
             className={classes.inputBase}
+            onKeyDown={handleKeyDown}
             onChange={handleChangeCommentInput}
             endAdornment={
               <SendIcon onClick={() => hanldePostComment()} style={{ fontSize: '32px', cursor: 'pointer' }} />

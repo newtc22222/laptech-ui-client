@@ -51,27 +51,25 @@ function ProductRating() {
   const [point, setPoint] = useState();
   const navigate = useNavigate();
   const maxRenderCount = 2;
-  const [allOrders, setAllOrders] = useState([]);
   const [productIds, setProductIds] = useState([]);
 
   useEffect(() => {
-    userService.getAllOrders().then((res) => {
-      if (res.status === 200) {
-        setAllOrders(res.data);
+    user &&
+      userService.getAllOrders().then((res) => {
+        if (res.status === 200) {
+          const findOrdersReceived = res.data?.filter((order) => order.orderStatus === 'RECEIVED');
+          const orderIds = findOrdersReceived?.map((order) => order.id);
 
-        const findOrdersReceived = res.data?.filter((order) => order.orderStatus === 'RECEIVED');
-        const orderIds = findOrdersReceived?.map((order) => order.id);
-
-        orderIds?.forEach((orderId) => {
-          historyService.getDetailItem(orderId).then((res) => {
-            if (res.status === 200) {
-              const item = res?.data[0]?.product?.id;
-              setProductIds((prevProductIds) => [...prevProductIds, item]);
-            }
+          orderIds?.forEach((orderId) => {
+            historyService.getDetailItem(orderId).then((res) => {
+              if (res.status === 200) {
+                const item = res?.data[0]?.product?.id;
+                setProductIds((prevProductIds) => [...prevProductIds, item]);
+              }
+            });
           });
-        });
-      }
-    });
+        }
+      });
   }, []);
 
   const fetchRatings = () => {
@@ -80,7 +78,7 @@ function ProductRating() {
 
   useEffect(() => {
     fetchRatings();
-  }, [ratingList]);
+  }, [ratingList?.length]);
 
   const initProductDetail = useSelector((state) => state.products.productDetail.data);
   const dataProduct = initProductDetail?.data?.product;
@@ -96,7 +94,6 @@ function ProductRating() {
 
   const handleFeedback = (event) => {
     event.preventDefault();
-
     const dataRating = {
       productId: dataProduct?.id,
       userId: user.id,
@@ -114,11 +111,11 @@ function ProductRating() {
           setRatingList((prevRatingList) => [...prevRatingList, dataRating]);
           setShowModal(false);
         } else {
-          toast.error('Chỉ được đánh giá sản phẩm 1 lần');
         }
       })
       .catch((error) => {
-        toast.error('Chỉ được đánh giá sản phẩm 1 lần');
+        toast.error(error.response?.data?.detail[0]);
+        toast.clearWaitingQueue();
       });
   };
 

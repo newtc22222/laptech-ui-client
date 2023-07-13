@@ -8,6 +8,7 @@ import { ProductCard } from '../../../components';
 import { productService } from '../../../services';
 import LoadingIndicator from '../../../components/LoadingIndicator/LoadingIndicator';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { numberWithCommas } from '../../../utils';
 
 const SearchPage = () => {
   useEffect(() => {
@@ -88,13 +89,13 @@ const SearchPage = () => {
               <div className="flex">
                 <InputBase
                   className="bg-[#fff] w-[100px] px-2"
-                  placeholder="TỪ"
+                  placeholder="₫ TỪ"
                   onChange={(event) => handlePriceChange(event, 'startPrice')}
                 />
                 <span className="mx-2 text-[gray]">-</span>
                 <InputBase
                   className="bg-[#fff] w-[100px] px-2"
-                  placeholder="ĐẾN"
+                  placeholder="₫ ĐẾN"
                   onChange={(event) => handlePriceChange(event, 'endPrice')}
                 />
               </div>

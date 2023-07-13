@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   makeStyles,
 } from '@material-ui/core';
 import { Visibility } from '@material-ui/icons';
@@ -96,9 +97,11 @@ const OrderTable = () => {
       }
       case 'product': {
         return (
-          <IconButton onClick={() => handleViewProduct(row.id)}>
-            <Visibility fontSize="small" style={{ color: '#04aa6d' }} />
-          </IconButton>
+          <Tooltip title="Xem sản phẩm">
+            <IconButton onClick={() => handleViewProduct(row.id)}>
+              <Visibility fontSize="small" style={{ color: '#04aa6d' }} />
+            </IconButton>
+          </Tooltip>
         );
       }
       case 'money': {
@@ -106,9 +109,11 @@ const OrderTable = () => {
       }
       case 'action': {
         return row.orderStatus === 'PENDING' ? (
-          <IconButton onClick={() => handleCancel(row.id)}>
-            <DeleteIcon fontSize="small" style={{ color: '#04aa6d' }} />
-          </IconButton>
+          <Tooltip title="Hủy đơn hàng">
+            <IconButton onClick={() => handleCancel(row.id)}>
+              <DeleteIcon fontSize="small" style={{ color: '#04aa6d' }} />
+            </IconButton>
+          </Tooltip>
         ) : (
           <DeleteIcon fontSize="small" style={{ color: 'gray' }} />
         );
@@ -262,7 +267,7 @@ const OrderTable = () => {
                     open={openConfirmDelete}
                     onClose={handleCloseConfirmDelete}
                     title="Confirm Deletion"
-                    content={`Bạn có chắc muốn xóa đơn hàng này không?`}
+                    content={`Bạn có chắc muốn hủy đơn hàng này không?`}
                     leftButton="No"
                     onClickLeftButton={handleCloseConfirmDelete}
                     rightButton="Yes"
@@ -326,7 +331,7 @@ const OrderTable = () => {
                     open={openConfirmDelete}
                     onClose={handleCloseConfirmDelete}
                     title="Confirm Deletion"
-                    content={`Bạn có chắc muốn xóa đơn hàng này không?`}
+                    content={`Bạn có chắc muốn hủy đơn hàng này không?`}
                     leftButton="No"
                     onClickLeftButton={handleCloseConfirmDelete}
                     rightButton="Yes"
