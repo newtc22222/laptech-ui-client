@@ -12,6 +12,7 @@ import { commentService } from '../../services';
 import { convertUTCDate } from '../../utils/ConvertUTCDate';
 import convertToIcon from '../../utils/convertToIcon';
 import { toast } from 'react-toastify';
+import './comment.scss';
 
 const useStyles = makeStyles(() => ({
   inputBase: {
@@ -141,7 +142,7 @@ const Comment = () => {
   };
 
   return (
-    <Box style={{ paddingBottom: '20px' }}>
+    <Box className="FixedHeightContainer" style={{ paddingBottom: '20px' }}>
       <h2 className="my-4">Thảo luận </h2>
       {commentList?.map((comment) => {
         if (comment.rootCommentId === null) {

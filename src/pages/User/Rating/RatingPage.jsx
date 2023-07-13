@@ -125,7 +125,7 @@ const RatingPage = () => {
             </div>
           )}
         </div>
-        <div className="w-[75%] flex flex-col">
+        <div className="w-[65%] flex flex-col">
           <TabContext value={value}>
             <TabList
               classes={{ indicator: classes.indicator }}
