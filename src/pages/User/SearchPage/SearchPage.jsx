@@ -1,14 +1,13 @@
 /** @format */
 
 import { Button, InputBase, TextField } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Col, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ProductCard } from '../../../components';
-import { productService } from '../../../services';
 import LoadingIndicator from '../../../components/LoadingIndicator/LoadingIndicator';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { numberWithCommas } from '../../../utils';
+import { productService } from '../../../services';
 
 const SearchPage = () => {
   useEffect(() => {

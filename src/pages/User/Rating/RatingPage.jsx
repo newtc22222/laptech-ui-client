@@ -5,12 +5,13 @@ import { StarFill } from 'react-bootstrap-icons';
 import Divider from '@mui/material/Divider';
 import Rating from '@mui/material/Rating';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { feedbackService } from '../../../services';
 import { convertUTCDate } from '../../../utils/ConvertUTCDate';
 import LoadingIndicator from '../../../components/LoadingIndicator/LoadingIndicator';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { Paper, Tab, makeStyles } from '@material-ui/core';
+import Pagination from '../../../components/Pagination/Pagination';
 
 const Star = ({ star }) => {
   return [...Array(star)].map((e, i) => (
@@ -45,6 +46,9 @@ const RatingPage = () => {
   const [requesting, setRequesting] = useState(false);
   const [value, setValue] = useState('1');
 
+  let PageSize = 3;
+  const [currentPage, setCurrentPage] = useState(1);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -75,6 +79,11 @@ const RatingPage = () => {
   const fourStar = ratingList?.filter((rating) => rating.ratingPoint === 4);
   const fiveStar = ratingList?.filter((rating) => rating.ratingPoint === 5);
 
+  const currentData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return ratingList?.slice(firstPageIndex, lastPageIndex);
+  }, [PageSize, currentPage, ratingList]);
   return requesting === false && ratingList?.length === 0 ? (
     <div className="pt-[120px] text-center  min-h-[100vh] font-bold text-[20px]">Sản phẩm này chưa có đánh giá nào</div>
   ) : (
@@ -133,22 +142,31 @@ const RatingPage = () => {
 
             <TabPanel style={{ padding: 0 }} value="1">
               <Paper style={{ padding: '10px' }}>
-                {ratingList?.map((comment, index) => {
+                {currentData?.map((comment, index) => {
                   return (
-                    <div className="py-8 border-b m-4" key={index}>
-                      <p className="font-bold">{comment.username}</p>
-                      <span className="text-yellow-300 flex">
-                        <Star star={comment.ratingPoint} />
-                      </span>
+                    <>
+                      <div className="py-8 border-b m-4">
+                        <p className="font-bold">{comment.username}</p>
+                        <span className="text-yellow-300 flex">
+                          <Star star={comment.ratingPoint} />
+                        </span>
 
-                      <p className="text-2xl">{comment.content}</p>
-                      <div className="flex">
-                        <span className="mr-2 text-[gray]">{convertUTCDate(comment.createdDate)}</span>
+                        <p className="text-2xl">{comment.content}</p>
+                        <div className="flex">
+                          <span className="mr-2 text-[gray]">{convertUTCDate(comment.createdDate)}</span>
+                        </div>
+                        <Divider sx={{ opacity: 0.4 }} />
                       </div>
-                      <Divider sx={{ opacity: 0.4 }} />
-                    </div>
+                    </>
                   );
                 })}
+                <Pagination
+                  className="pagination-bar"
+                  currentPage={currentPage}
+                  totalCount={ratingList?.length}
+                  pageSize={PageSize}
+                  onPageChange={(page) => setCurrentPage(page)}
+                />
               </Paper>
             </TabPanel>
 
