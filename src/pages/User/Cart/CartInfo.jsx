@@ -19,6 +19,7 @@ import { numberWithCommas } from '../../../utils';
 import './Cart.scss';
 import FormDataCart from './FormDataCart';
 import ProductItem from './ProductItem';
+import { PaymentService } from '../../../services/payment/payment.service';
 
 function CartInfo() {
   const cartData = useCart();
@@ -76,7 +77,6 @@ function CartInfo() {
 
   const onSubmit = (data) => {
     const invoiceId = Math.floor(Math.random() * 100000000).toString(4);
-
     cartItems?.forEach((item) => {
       const dataProduct = {
         id: crypto.randomUUID().slice(0, 6),
@@ -85,7 +85,7 @@ function CartInfo() {
         quantity: item.quantity,
         price: item.price,
         discountPrice: item.discountPrice,
-        updateBy: 'system',
+        updateBy: user?.name,
       };
       orderService.postItem(dataProduct);
     });
@@ -99,7 +99,7 @@ function CartInfo() {
       paymentTotal: totalPrice,
       paymentAmount: totalQuantity,
       paymentType: selectedValue,
-      orderStatus: 'PENDING',
+      orderStatus: selectedValue === 'momo' ? 'PENDING' : 'WAIT_CONFIRMED',
       phone: data.phone,
       shipCost: 0,
       tax: 0,
@@ -116,7 +116,20 @@ function CartInfo() {
       if (res.status === 201) {
         setRequesting(false);
         dispatch(clearCart());
-        navigate('/order?invoiceData=' + encodeURIComponent(invoiceId));
+        if (selectedValue === 'momo') {
+          const payload = {
+            amount: totalPrice,
+            extraData: 'string',
+            orderInfo: user?.name,
+            returnUrl: `http://localhost:3000/result_checkout?invoiceId=${invoiceId}`,
+            type: 2,
+          };
+          PaymentService.createPaymentLink(payload).then((res) => {
+            window.location.href = res.data;
+          });
+        } else {
+          navigate(`/order?invoiceData=${invoiceId}`);
+        }
       }
     });
   };

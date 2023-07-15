@@ -115,7 +115,7 @@ const SearchPage = () => {
             {products?.map((product) => (
               <Col className="gutter-row" span={6} key={product.id}>
                 <div className="rounded-xl overflow-hidden">
-                  <div className="rounded-xl overflow-hidden">
+                  <div className="rounded-xl overflow-hidden min-w-[1200px]">
                     <ProductCard {...product} />
                     <div className="my-[20px]"></div>
                   </div>
