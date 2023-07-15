@@ -19,13 +19,19 @@ import { numberWithCommas } from '../../../utils';
 import './Cart.scss';
 import FormDataCart from './FormDataCart';
 import ProductItem from './ProductItem';
+import { PaymentService } from '../../../services/payment/payment.service';
 
 function CartInfo() {
   const cartData = useCart();
   const [requesting, setRequesting] = useState(false);
   const { cartItems, totalPrice, totalQuantity } = cartData;
   const [address, setAddress] = useState();
-  const defaultAdress = `${address?.street}, ${address?.line3}, ${address?.line2}`;
+
+  const defaultAdress =
+    address?.length > 0 &&
+    `${address[address?.length - 1]?.street}, ${address[address?.length - 1]?.line3}, ${
+      address[address?.length - 1]?.line2
+    }, ${address[address?.length - 1]?.line1}`;
 
   const [addressOption, setAddresOption] = useState();
   const [checked, setChecked] = useState(false);
@@ -45,7 +51,7 @@ function CartInfo() {
 
   useEffect(() => {
     userService
-      .getAddress(user?.id)
+      .getAddressByUserId(user?.id)
       .then((res) => {
         setAddress(res.data);
       })
@@ -76,7 +82,6 @@ function CartInfo() {
 
   const onSubmit = (data) => {
     const invoiceId = Math.floor(Math.random() * 100000000).toString(4);
-
     cartItems?.forEach((item) => {
       const dataProduct = {
         id: crypto.randomUUID().slice(0, 6),
@@ -85,13 +90,13 @@ function CartInfo() {
         quantity: item.quantity,
         price: item.price,
         discountPrice: item.discountPrice,
-        updateBy: 'system',
+        updateBy: user?.name,
       };
       orderService.postItem(dataProduct);
     });
     const dataAddress = checked
       ? defaultAdress
-      : data.homeaddress + ',' + addressOption.ward + ',' + addressOption.district + ',' + addressOption.city;
+      : data?.homeaddress + ',' + addressOption?.ward + ',' + addressOption?.district + ',' + addressOption?.city;
     const userId = user?.id;
     const dataInvoice = {
       address: dataAddress,
@@ -99,7 +104,7 @@ function CartInfo() {
       paymentTotal: totalPrice,
       paymentAmount: totalQuantity,
       paymentType: selectedValue,
-      orderStatus: 'PENDING',
+      orderStatus: selectedValue === 'momo' ? 'PENDING' : 'WAIT_CONFIRMED',
       phone: data.phone,
       shipCost: 0,
       tax: 0,
@@ -110,12 +115,46 @@ function CartInfo() {
       isPaid: false,
     };
 
+    if (!checked) {
+      const dataAdress = {
+        country: 'Viet Nam',
+        isDefault: true,
+        line1: addressOption.city,
+        line2: addressOption.district,
+        line3: addressOption.ward,
+        street: data.homeaddress,
+        updateBy: user?.name,
+        userId: user?.id,
+        id: crypto.randomUUID().slice(0, 4),
+      };
+
+      userService.postAddress(dataAdress).then((res) => {
+        if (res.status === 201) {
+          console.log('post new address successfully');
+        }
+      });
+    }
+
     orderService.postOrder(dataInvoice).then((res) => {
       setRequesting(true);
 
       if (res.status === 201) {
-        navigate('/order');
+        setRequesting(false);
         dispatch(clearCart());
+        if (selectedValue === 'momo') {
+          const payload = {
+            amount: totalPrice,
+            extraData: 'string',
+            orderInfo: user?.name,
+            returnUrl: `http://localhost:3000/result_checkout?invoiceId=${invoiceId}`,
+            type: 2,
+          };
+          PaymentService.createPaymentLink(payload).then((res) => {
+            window.location.href = res.data;
+          });
+        } else {
+          navigate(`/order?invoiceData=${invoiceId}`);
+        }
       }
     });
   };

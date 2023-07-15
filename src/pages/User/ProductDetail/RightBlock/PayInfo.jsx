@@ -56,7 +56,11 @@ function PayInfo() {
             onClick={handleClickPay}
             disabled={quantityInStock > 0 ? false : true}
           >
-            {quantityInStock > 0 ? 'THÊM VÀO GIỎ HÀNG' : 'SẢN PHẨM ĐANG HẾT HÀNG'}
+            {quantityInStock > 0 ? (
+              <span className="cursor-pointer">THÊM VÀO GIỎ HÀNG</span>
+            ) : (
+              <span className="cursor-pointer">SẢN PHẨM ĐANG HẾT HÀNG</span>
+            )}
           </button>
         </div>
       </div>

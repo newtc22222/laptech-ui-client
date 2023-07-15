@@ -7,15 +7,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ProductCard } from '../../../components';
 import { getAllProductApi } from '../../../redux/product/productsApi';
 import LoadingIndicator from '../../../components/LoadingIndicator/LoadingIndicator';
+import { useNavigate } from 'react-router-dom';
 
 function AllProduct() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllProductApi(dispatch);
   }, []);
 
   const products = useSelector((state) => state.products.allProducts.data);
+  console.log(products);
 
   const [visible, setVisible] = useState(8);
 
@@ -25,10 +28,16 @@ function AllProduct() {
 
   return (
     <>
-      <LoadingIndicator loading={!products} />
+      <LoadingIndicator loading={products.length === 0} />
       <section className="flex justify-center items-center">
         <div className="flex flex-col justify-center">
-          <h4 className="text-center font-bold my-4 text-[1.6rem]">TẤT CẢ SẢN PHẨM</h4>
+          <h4 className="text-center font-bold  text-[1.6rem]">TẤT CẢ SẢN PHẨM</h4>
+          <span
+            className="text-[#0099FF] cursor-pointer font-bold text-center my-4"
+            onClick={() => navigate('/products')}
+          >
+            Xem tất cả
+          </span>
 
           <div className="w-full flex">
             <Row gutter={0}>

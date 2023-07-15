@@ -1,57 +1,54 @@
-/** @format */
+/**
+ * /* eslint-disable react-hooks/exhaustive-deps
+ *
+ * @format
+ */
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { PATHS } from './paths';
-
+const token = '60be7953-6f94-11ed-b09a-9a2a48e971b0';
 const FETCH_TYPES = {
   CITIES: 'FETCH_CITIES',
   DISTRICTS: 'FETCH_DISTRICTS',
   WARDS: 'FETCH_WARDS',
 };
 
+const PATHS = {
+  CITIES: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/province',
+  DISTRICTS: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/district',
+  WARDS: 'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward',
+  LOCATION: 'https://raw.githubusercontent.com/nhidh99/codergamo/master/004-location-selects/locations/location.json',
+};
+
 async function fetchLocationOptions(fetchType, locationId) {
   let url;
-  switch (fetchType) {
-    case FETCH_TYPES.CITIES: {
-      url = PATHS.CITIES;
-      break;
-    }
-    case FETCH_TYPES.DISTRICTS: {
-      url = `${PATHS.DISTRICTS}/${locationId}.json`;
-      break;
-    }
-    case FETCH_TYPES.WARDS: {
-      url = `${PATHS.WARDS}/${locationId}.json`;
-      break;
-    }
-    default: {
-      return [];
-    }
+  if (fetchType === FETCH_TYPES.CITIES) {
+    url = PATHS.CITIES;
+    const locations = (await axios.get(url, { headers: { token: token } })).data?.data;
+    return locations.map(({ ProvinceID, ProvinceName }) => ({
+      value: ProvinceID,
+      label: ProvinceName,
+    }));
   }
-  const locations = (await axios.get(url)).data['data'];
-  return locations.map(({ id, name }) => ({ value: id, label: name }));
+  if (fetchType === FETCH_TYPES.DISTRICTS) {
+    url = PATHS.DISTRICTS + '?province_id=' + locationId;
+    const locations = (await axios.get(url, { headers: { token: token } })).data?.data;
+    return locations.map(({ DistrictID, DistrictName }) => ({
+      value: DistrictID,
+      label: DistrictName,
+    }));
+  }
+  if (fetchType === FETCH_TYPES.WARDS) {
+    url = PATHS.WARDS + '?district_id=' + locationId;
+    const locations = (await axios.get(url, { headers: { token: token } })).data?.data;
+    return locations.map(({ WardCode, WardName }) => ({ value: WardCode, label: WardName }));
+  }
+  return [];
 }
 
-export async function fetchInitialData() {
-  const { cityId, districtId, wardId } = (await axios.get(PATHS.LOCATION)).data;
-  const [cities, districts, wards] = await Promise.all([
-    fetchLocationOptions(FETCH_TYPES.CITIES),
-    fetchLocationOptions(FETCH_TYPES.DISTRICTS, cityId),
-    fetchLocationOptions(FETCH_TYPES.WARDS, districtId),
-  ]);
-  return {
-    cityOptions: cities,
-    districtOptions: districts,
-    wardOptions: wards,
-    selectedCity: cities.find((c) => c.value === cityId),
-    selectedDistrict: districts.find((d) => d.value === districtId),
-    selectedWard: wards.find((w) => w.value === wardId),
-  };
-}
-
-function useLocationForm(shouldFetchInitialLocation) {
+function useLocationForm(shouldFetchInitialLocation, idAddress) {
+  let isMount = true;
   const [state, setState] = useState({
     cityOptions: [],
     districtOptions: [],
@@ -64,16 +61,18 @@ function useLocationForm(shouldFetchInitialLocation) {
   const { selectedCity, selectedDistrict } = state;
 
   useEffect(() => {
-    (async function () {
-      if (shouldFetchInitialLocation) {
-        const initialData = await fetchInitialData();
-        setState(initialData);
-      } else {
+    var controller = new AbortController();
+    if (isMount) {
+      (async function () {
         const options = await fetchLocationOptions(FETCH_TYPES.CITIES);
         setState({ ...state, cityOptions: options });
-      }
-    })();
-  }, [state, shouldFetchInitialLocation]);
+      })();
+    }
+    return () => {
+      isMount = false;
+      controller.abort();
+    };
+  }, []);
 
   useEffect(() => {
     (async function () {
@@ -81,7 +80,7 @@ function useLocationForm(shouldFetchInitialLocation) {
       const options = await fetchLocationOptions(FETCH_TYPES.DISTRICTS, selectedCity.value);
       setState({ ...state, districtOptions: options });
     })();
-  }, [selectedCity, state]);
+  }, [selectedCity]);
 
   useEffect(() => {
     (async function () {
@@ -89,7 +88,7 @@ function useLocationForm(shouldFetchInitialLocation) {
       const options = await fetchLocationOptions(FETCH_TYPES.WARDS, selectedDistrict.value);
       setState({ ...state, wardOptions: options });
     })();
-  }, [selectedDistrict, state]);
+  }, [selectedDistrict]);
 
   function onCitySelect(option) {
     if (option !== selectedCity) {
@@ -121,12 +120,7 @@ function useLocationForm(shouldFetchInitialLocation) {
 
   function onSubmit(e) {
     e.preventDefault();
-    const city = state.selectedCity?.label;
-    const district = state.selectedDistrict?.label;
-    const ward = state.selectedWard?.label;
-    localStorage.setItem('city', city);
-    localStorage.setItem('district', district);
-    localStorage.setItem('ward', ward);
+    window.location.reload();
   }
 
   return { state, onCitySelect, onDistrictSelect, onWardSelect, onSubmit };

@@ -1,7 +1,6 @@
 /** @format */
 
 import {
-  Box,
   IconButton,
   Tab,
   TableBody,
@@ -9,10 +8,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   makeStyles,
 } from '@material-ui/core';
 import { Visibility } from '@material-ui/icons';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { Grid } from '@mui/material';
 import { Divider } from 'antd';
 import { Table } from 'flowbite-react';
@@ -25,9 +26,7 @@ import LoadingIndicator from '../../../../components/LoadingIndicator/LoadingInd
 import { historyService, productService } from '../../../../services';
 import { numberWithCommas } from '../../../../utils';
 import { convertUTCDate } from '../../../../utils/ConvertUTCDate';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import EmptyOrder from './EmptyOrder';
-
 const columns = [
   { id: 'id', label: 'Mã đơn hàng', align: 'center', minWidth: 100 },
   { id: 'product', label: 'Sản phẩm', format: 'product', align: 'center', minWidth: 50 },
@@ -98,9 +97,11 @@ const OrderTable = () => {
       }
       case 'product': {
         return (
-          <IconButton onClick={() => handleViewProduct(row.id)}>
-            <Visibility fontSize="small" style={{ color: '#04aa6d' }} />
-          </IconButton>
+          <Tooltip title="Xem sản phẩm">
+            <IconButton onClick={() => handleViewProduct(row.id)}>
+              <Visibility fontSize="small" style={{ color: '#04aa6d' }} />
+            </IconButton>
+          </Tooltip>
         );
       }
       case 'money': {
@@ -108,9 +109,11 @@ const OrderTable = () => {
       }
       case 'action': {
         return row.orderStatus === 'PENDING' ? (
-          <IconButton onClick={() => handleCancel(row.id)}>
-            <DeleteIcon fontSize="small" style={{ color: '#04aa6d' }} />
-          </IconButton>
+          <Tooltip title="Hủy đơn hàng">
+            <IconButton onClick={() => handleCancel(row.id)}>
+              <DeleteIcon fontSize="small" style={{ color: '#04aa6d' }} />
+            </IconButton>
+          </Tooltip>
         ) : (
           <DeleteIcon fontSize="small" style={{ color: 'gray' }} />
         );
@@ -264,7 +267,7 @@ const OrderTable = () => {
                     open={openConfirmDelete}
                     onClose={handleCloseConfirmDelete}
                     title="Confirm Deletion"
-                    content={`Bạn có chắc muốn xóa đơn hàng này không?`}
+                    content={`Bạn có chắc muốn hủy đơn hàng này không?`}
                     leftButton="No"
                     onClickLeftButton={handleCloseConfirmDelete}
                     rightButton="Yes"
@@ -328,7 +331,7 @@ const OrderTable = () => {
                     open={openConfirmDelete}
                     onClose={handleCloseConfirmDelete}
                     title="Confirm Deletion"
-                    content={`Bạn có chắc muốn xóa đơn hàng này không?`}
+                    content={`Bạn có chắc muốn hủy đơn hàng này không?`}
                     leftButton="No"
                     onClickLeftButton={handleCloseConfirmDelete}
                     rightButton="Yes"

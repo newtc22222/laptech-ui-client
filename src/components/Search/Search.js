@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getProductsByName } from '../../redux/product/productsApi';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles(() => ({
   inputBase: {
@@ -35,12 +37,17 @@ const SearchProduct = () => {
   };
 
   const handleSearch = () => {
-    setLoading(true);
-    getProductsByName(dispatch, searchValue);
-    setTimeout(() => {
-      setLoading(false);
-      navigate(`/search?keyword=${searchValue}`);
-    }, 3000);
+    if (searchValue !== '') {
+      setLoading(true);
+      getProductsByName(dispatch, searchValue);
+      setTimeout(() => {
+        setLoading(false);
+        navigate(`/search?keyword=${searchValue}`);
+      }, 3000);
+    } else {
+      toast.warning('Nhập tên sản phẩm để tìm kiếm');
+      toast.clearWaitingQueue();
+    }
   };
 
   const handleKeyDown = (event) => {
@@ -49,6 +56,9 @@ const SearchProduct = () => {
       handleSearch();
     }
   };
+  const handleClearSearchValue = () => {
+    setSearchValue('');
+  };
 
   return (
     <>
@@ -56,7 +66,7 @@ const SearchProduct = () => {
       <div>
         <InputBase
           onKeyDown={handleKeyDown}
-          placeholder="Search..."
+          placeholder="Nhập tên sản phẩm để tìm kiếm"
           className={classes.inputBase}
           startAdornment={
             <IconButton
@@ -66,6 +76,19 @@ const SearchProduct = () => {
             >
               <SearchIcon fontSize="large" />
             </IconButton>
+          }
+          endAdornment={
+            searchValue !== '' && (
+              <>
+                <IconButton
+                  onClick={() => {
+                    handleClearSearchValue();
+                  }}
+                >
+                  <CloseOutlinedIcon fontSize="large" />
+                </IconButton>
+              </>
+            )
           }
           value={searchValue}
           onChange={handleChange}

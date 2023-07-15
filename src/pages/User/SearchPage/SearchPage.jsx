@@ -1,13 +1,13 @@
 /** @format */
 
 import { Button, InputBase, TextField } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Col, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ProductCard } from '../../../components';
-import { productService } from '../../../services';
 import LoadingIndicator from '../../../components/LoadingIndicator/LoadingIndicator';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { productService } from '../../../services';
 
 const SearchPage = () => {
   useEffect(() => {
@@ -88,13 +88,13 @@ const SearchPage = () => {
               <div className="flex">
                 <InputBase
                   className="bg-[#fff] w-[100px] px-2"
-                  placeholder="TỪ"
+                  placeholder="₫ TỪ"
                   onChange={(event) => handlePriceChange(event, 'startPrice')}
                 />
                 <span className="mx-2 text-[gray]">-</span>
                 <InputBase
                   className="bg-[#fff] w-[100px] px-2"
-                  placeholder="ĐẾN"
+                  placeholder="₫ ĐẾN"
                   onChange={(event) => handlePriceChange(event, 'endPrice')}
                 />
               </div>
@@ -115,7 +115,7 @@ const SearchPage = () => {
             {products?.map((product) => (
               <Col className="gutter-row" span={6} key={product.id}>
                 <div className="rounded-xl overflow-hidden">
-                  <div className="rounded-xl overflow-hidden">
+                  <div className="rounded-xl overflow-hidden min-w-[1200px]">
                     <ProductCard {...product} />
                     <div className="my-[20px]"></div>
                   </div>
