@@ -7,7 +7,7 @@ import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { Box, Container, Grid, Paper } from '@mui/material';
 import { Typography } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Confetti from 'react-confetti';
 import { Helmet } from 'react-helmet';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -23,11 +23,14 @@ const Order = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const invoiceDataParam = searchParams.get('invoiceData');
-  orderService.getOrderById(invoiceDataParam).then((res) => {
-    if (res.status === 200) {
-      setDataInvoice(res.data);
-    }
-  });
+
+  useEffect(() => {
+    orderService.getOrderById(invoiceDataParam).then((res) => {
+      if (res.status === 200) {
+        setDataInvoice(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Container style={{ paddingTop: '80px', maxWidth: '700px', minHeight: '800px', position: 'relative' }}>

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { StarFill } from 'react-bootstrap-icons';
 import Divider from '@mui/material/Divider';
 import Rating from '@mui/material/Rating';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { feedbackService } from '../../../services';
 import { convertUTCDate } from '../../../utils/ConvertUTCDate';
@@ -12,6 +12,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator/LoadingIndica
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { Paper, Tab, makeStyles } from '@material-ui/core';
 import Pagination from '../../../components/Pagination/Pagination';
+import { Button, Typography } from 'antd';
 
 const Star = ({ star }) => {
   return [...Array(star)].map((e, i) => (
@@ -52,6 +53,8 @@ const RatingPage = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     FetchRatings();
@@ -331,6 +334,16 @@ const RatingPage = () => {
               )}
             </TabPanel>
           </TabContext>
+
+          <div className="flex justify-center mt-[20px]">
+            <Button
+              onClick={() => navigate('/')}
+              variant="contained"
+              style={{ backgroundColor: '#FFF', padding: 20, borderRadius: 30, display: 'flex', alignItems: 'center' }}
+            >
+              Về Trang chủ
+            </Button>
+          </div>
         </div>
       </div>
     </>

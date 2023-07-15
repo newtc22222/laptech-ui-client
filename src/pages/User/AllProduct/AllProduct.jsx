@@ -16,6 +16,11 @@ const Filter = () => {
   const CPUs = ['Core i3', 'Core i5', 'Core i7', 'Core i9'];
   const Hardwares = ['SSD 512 GB', 'SSD 128 GB', 'SSD 256 GB', 'SSD 1 TB'];
   const Screens = ['15.6 inch', '14.0 inch', '16.0 inch', '16.1 inch'];
+  const Prices = [
+    { label: 'Dưới 15 triệu', minPrice: null, maxPrice: 15000000 },
+    { label: 'Từ 15 triệu đến 20 triệu', minPrice: 15000000, maxPrice: 20000000 },
+    { label: 'Trên 20 triệu', minPrice: 20000000, maxPrice: null },
+  ];
 
   useEffect(() => {
     productService.getAllProducts().then((res) => {
@@ -32,6 +37,8 @@ const Filter = () => {
     cpu: [],
     hardware: [],
     screen: [],
+    minPrice: null,
+    maxPrice: null,
   };
 
   const [products, setProducts] = useState(productList);
@@ -52,7 +59,10 @@ const Filter = () => {
         case 'SCREEN':
           setFilter({ ...filter, screen: [...filter.screen, item] });
           break;
-
+        case 'PRICE':
+          const { minPrice, maxPrice } = item;
+          setFilter({ ...filter, minPrice, maxPrice });
+          break;
         default:
       }
     } else {
@@ -98,6 +108,16 @@ const Filter = () => {
 
     if (filter.screen.length > 0) {
       temp = temp.filter((product) => product.labelList.some((item) => filter.screen.includes(item.title)));
+    }
+
+    if (filter.minPrice !== null && filter.maxPrice !== null) {
+      temp = temp.filter(
+        (product) => product.discountPrice >= filter.minPrice && product.discountPrice <= filter.maxPrice,
+      );
+    } else if (filter.minPrice !== null) {
+      temp = temp.filter((product) => product.discountPrice >= filter.minPrice);
+    } else if (filter.maxPrice !== null) {
+      temp = temp.filter((product) => product.discountPrice <= filter.maxPrice);
     }
 
     setProducts(temp);
@@ -160,6 +180,19 @@ const Filter = () => {
                   label={item}
                   onChange={(input) => filterSelect('SCREEN', input.checked, item)}
                   checked={filter.screen.includes(item)}
+                />
+              </div>
+            ))}
+          </>
+          <>
+            <span className="font-bold">GIÁ</span>
+
+            {Prices.map((item, index) => (
+              <div key={index} className="catalog__filter__widget__content__item my-1">
+                <CheckBox
+                  label={item.label}
+                  onChange={(input) => filterSelect('PRICE', input.checked, item)}
+                  checked={filter.minPrice === item.minPrice && filter.maxPrice === item.maxPrice}
                 />
               </div>
             ))}

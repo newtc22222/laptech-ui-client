@@ -18,6 +18,7 @@ function AllProduct() {
   }, []);
 
   const products = useSelector((state) => state.products.allProducts.data);
+  console.log(products);
 
   const [visible, setVisible] = useState(8);
 
@@ -27,7 +28,7 @@ function AllProduct() {
 
   return (
     <>
-      <LoadingIndicator loading={!products} />
+      <LoadingIndicator loading={products.length === 0} />
       <section className="flex justify-center items-center">
         <div className="flex flex-col justify-center">
           <h4 className="text-center font-bold  text-[1.6rem]">TẤT CẢ SẢN PHẨM</h4>

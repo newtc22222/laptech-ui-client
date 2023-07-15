@@ -20,9 +20,13 @@ export const userService = {
   changePassword(data) {
     return axiosClient.post('/auth/changePassword', data);
   },
-  getAddress(id) {
-    return axiosClient.get(`/address/${id}`);
+  getAddressByUserId(id) {
+    return axiosClient.get(`/users/${id}/address`);
   },
+  postAddress(data) {
+    return axiosClient.post(`/address`, data);
+  },
+
   forgotPassword(data) {
     return axiosClient.post('/auth/forgotPassword', data);
   },
