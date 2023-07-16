@@ -1,6 +1,8 @@
 /** @format */
 
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/Login/loginSlice';
 
 export const apiProduction = process.env.REACT_APP_BASE_API_PROD;
 export const apiDev = process.env.REACT_APP_BASE_API_DEV;
@@ -32,6 +34,12 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   function (res) {
+    if (res.status !== 200) {
+      const dispatch = useDispatch();
+      localStorage.removeItem('loginClient');
+      dispatch(logout());
+    }
+
     return res.data;
   },
 
