@@ -80,7 +80,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgb(4, 170, 109)',
     color: '#ffffff',
     fontSize: '14px',
-    padding: '0 21px',
+    padding: '0 30px',
+    textAlign: 'center',
 
     // Add any other styles you want for the active tab
   },
@@ -88,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '14px',
     backgroundColor: '#ffffff',
     color: 'black',
-    padding: '0 21px',
+    padding: '0 30px',
   },
 }));
 

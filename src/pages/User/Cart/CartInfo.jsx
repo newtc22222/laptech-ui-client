@@ -105,7 +105,7 @@ function CartInfo() {
       userId: userId,
       paymentTotal: totalPrice,
       paymentAmount: totalQuantity,
-      paymentType: selectedValue,
+      paymentType: selectedValue || 'cash',
       orderStatus: selectedValue === 'momo' ? 'PENDING' : 'WAIT_CONFIRMED',
       phone: data.phone,
       shipCost: 0,
