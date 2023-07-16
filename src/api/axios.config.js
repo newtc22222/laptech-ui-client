@@ -34,10 +34,8 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   function (res) {
-    if (res.status !== 200) {
-      const dispatch = useDispatch();
+    if (res.status === 401) {
       localStorage.removeItem('loginClient');
-      dispatch(logout());
     }
 
     return res.data;
