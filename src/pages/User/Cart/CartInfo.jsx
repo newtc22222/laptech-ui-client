@@ -162,7 +162,7 @@ function CartInfo() {
   };
 
   return (
-    <div className="w-2/4 m-auto border border-[#04aa6d] pt-[100px]">
+    <div className="w-2/4 m-auto border border-[#04aa6d] pt-[100px] pb-[50px]">
       <LoadingIndicator loading={requesting} />
       <div className="flex justify-between py-4 px-4">
         <Link to="/" className="text-blue-500 flex items-center font-bold">
