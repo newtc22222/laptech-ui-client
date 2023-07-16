@@ -109,3 +109,7 @@ input[type=number]::-webkit-outer-spin-button {
 .css-cjctlb-MuiButtonBase-root-MuiTab-root.Mui-selected, .css-cjctlb-MuiButtonBase-root-MuiTab-root {
   font-size: 12px !important;
 }
+.MuiTabs-flexContainer{
+  display: flex;
+  justify-content: center;
+}
