@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('xl')]: {
       maxHeight: '60vh',
     },
+    backgroundColor: '#ffffff',
   },
   indicator: {
     display: 'none',
@@ -79,6 +80,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgb(4, 170, 109)',
     color: '#ffffff',
     fontSize: '14px',
+    padding: '0 30px',
+    textAlign: 'center',
 
     // Add any other styles you want for the active tab
   },
@@ -86,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '14px',
     backgroundColor: '#ffffff',
     color: 'black',
+    padding: '0 30px',
   },
 }));
 
@@ -108,7 +112,7 @@ const OrderTable = () => {
         return numberWithCommas(value);
       }
       case 'action': {
-        return row.orderStatus === 'PENDING' ? (
+        return row.orderStatus === 'PENDING' || row.orderStatus === 'WAIT_CONFIRMED' ? (
           <Tooltip title="Hủy đơn hàng">
             <IconButton onClick={() => handleCancel(row.id)}>
               <DeleteIcon fontSize="small" style={{ color: '#04aa6d' }} />
@@ -279,7 +283,7 @@ const OrderTable = () => {
               )}
             </Grid>
           </TabPanel>
-          <TabPanel value="2">
+          <TabPanel value="2" style={{ padding: 0 }}>
             <Grid container>
               {ordersPending.length > 0 ? (
                 <Grid item xs={12} style={{ zIndex: 0 }}>
@@ -343,7 +347,7 @@ const OrderTable = () => {
               )}
             </Grid>
           </TabPanel>
-          <TabPanel value="3">
+          <TabPanel value="3" style={{ padding: 0 }}>
             <Grid container>
               {ordersShipping.length > 0 ? (
                 <Grid item xs={12} style={{ zIndex: 0 }}>
@@ -408,7 +412,7 @@ const OrderTable = () => {
             </Grid>
           </TabPanel>
 
-          <TabPanel value="4">
+          <TabPanel value="4" style={{ padding: 0 }}>
             <Grid container>
               {ordersReceived.length > 0 ? (
                 <Grid item xs={12} style={{ zIndex: 0 }}>
@@ -472,7 +476,7 @@ const OrderTable = () => {
               )}
             </Grid>
           </TabPanel>
-          <TabPanel value="5">
+          <TabPanel value="5" style={{ padding: 0 }}>
             <Grid container>
               {ordersCanceled.length > 0 ? (
                 <Grid item xs={12} style={{ zIndex: 0 }}>
@@ -536,7 +540,7 @@ const OrderTable = () => {
               )}
             </Grid>
           </TabPanel>
-          <TabPanel value="6">
+          <TabPanel value="6" style={{ padding: 0 }}>
             <Grid container>
               {ordersIgnored.length > 0 ? (
                 <Grid item xs={12} style={{ zIndex: 0 }}>

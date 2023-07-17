@@ -100,7 +100,7 @@ const Order = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography style={{ fontSize: '1.5rem', color: 'red' }}>
+            <Typography style={{ fontSize: '1.5rem', color: 'red', fontWeight: 'bold' }}>
               {numberWithCommas(dataInvoice?.paymentTotal)} đ
             </Typography>
           </Grid>

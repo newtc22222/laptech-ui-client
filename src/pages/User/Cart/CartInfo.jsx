@@ -25,7 +25,7 @@ function CartInfo() {
   const cartData = useCart();
   const [requesting, setRequesting] = useState(false);
   const { cartItems, totalPrice, totalQuantity } = cartData;
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState([]);
 
   const defaultAdress =
     address?.length > 0 &&
@@ -56,7 +56,7 @@ function CartInfo() {
         setAddress(res.data);
       })
       .catch((err) => {
-        console.log('error');
+        console.log('can not find default address');
       });
   }, [user?.id]);
 
@@ -92,7 +92,9 @@ function CartInfo() {
         discountPrice: item.discountPrice,
         updateBy: user?.name,
       };
-      orderService.postItem(dataProduct);
+      orderService.postItem(dataProduct).catch((error) => {
+        console.log(error);
+      });
     });
     const dataAddress = checked
       ? defaultAdress
@@ -103,7 +105,7 @@ function CartInfo() {
       userId: userId,
       paymentTotal: totalPrice,
       paymentAmount: totalQuantity,
-      paymentType: selectedValue,
+      paymentType: selectedValue || 'cash',
       orderStatus: selectedValue === 'momo' ? 'PENDING' : 'WAIT_CONFIRMED',
       phone: data.phone,
       shipCost: 0,
@@ -115,7 +117,7 @@ function CartInfo() {
       isPaid: false,
     };
 
-    if (!checked) {
+    if ((!checked && address?.length > 0) || address?.length === 0) {
       const dataAdress = {
         country: 'Viet Nam',
         isDefault: true,
@@ -125,7 +127,7 @@ function CartInfo() {
         street: data.homeaddress,
         updateBy: user?.name,
         userId: user?.id,
-        id: crypto.randomUUID().slice(0, 4),
+        id: invoiceId,
       };
 
       userService.postAddress(dataAdress).then((res) => {
@@ -160,7 +162,7 @@ function CartInfo() {
   };
 
   return (
-    <div className="w-2/4 m-auto border border-[#04aa6d] pt-[100px]">
+    <div className="w-2/4 m-auto border border-[#04aa6d] pt-[100px] pb-[50px]">
       <LoadingIndicator loading={requesting} />
       <div className="flex justify-between py-4 px-4">
         <Link to="/" className="text-blue-500 flex items-center font-bold">
@@ -192,7 +194,7 @@ function CartInfo() {
           <div className="my-8">
             <p style={{ padding: '10px' }}>Chọn địa chỉ nhận hàng </p>
             <div>
-              {address !== undefined && (
+              {address?.length > 0 && (
                 <div>
                   <div className="flex gap-2 items-center">
                     <Checkbox
